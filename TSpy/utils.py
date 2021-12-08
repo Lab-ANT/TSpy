@@ -4,7 +4,7 @@
 import numpy as np
 import math
 
-def normalize(data_tensor):
+def all_normalize(data_tensor):
     mean = np.mean(data_tensor)
     var = np.var(data_tensor)
     i = 0
