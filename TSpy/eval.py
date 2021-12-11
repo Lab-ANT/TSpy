@@ -1,7 +1,6 @@
 from sklearn import metrics
-from eval import adjust_label
 import numpy as np
-from label import adjust_label
+from TSpy.label import adjust_label
 
 def macro_precision(prediction, groundtruth):
     '''
@@ -24,3 +23,9 @@ def macro_f1score(prediction, groundtruth):
         print('prediction and groundtruth must be of the same length')
     else:
         return metrics.f1_score(adjust_label(prediction),adjust_label(groundtruth),average='macro')
+
+def ARI(prediction, groundtruth):
+    return metrics.adjusted_rand_score(prediction, groundtruth)
+
+def AMI(prediction, groundtruth):
+    return metrics.adjusted_mutual_info_score(prediction, groundtruth)

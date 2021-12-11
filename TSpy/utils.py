@@ -4,6 +4,9 @@
 import numpy as np
 import math
 
+def len_of_file(path):
+    return len(open(path,'rU').readlines())
+
 def all_normalize(data_tensor):
     mean = np.mean(data_tensor)
     var = np.var(data_tensor)
