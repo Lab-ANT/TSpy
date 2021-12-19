@@ -57,3 +57,33 @@ def calculate_density_matrix(feature_list, n=100):
         density_matrix.append(row_densities)
     density_matrix = np.array(density_matrix)
     return density_matrix, w_start, w_end, h_start, h_end,
+
+def calculate_scalar_velocity_list(feature_list, interval=1):
+    velocity_list = []
+    
+    for pre_pos,pos in zip(feature_list[:-interval],feature_list[interval:]):
+        # calculate displacement
+        velocity_list.append(np.linalg.norm(pos-pre_pos))
+    for i in range(interval):
+        velocity_list.append(0)
+    velocity_list = np.array(velocity_list)
+
+    return velocity_list
+
+def calculate_velocity_list(feature_list, interval=500):
+    velocity_list_x = []
+    velocity_list_y = []
+    
+    for pre_pos,pos in zip(feature_list[:-interval],feature_list[interval:]):
+        # calculate displacement for x, y, respectively
+        displacement_x = (pos[0]-pre_pos[0])/interval
+        displacement_y = (pos[1]-pre_pos[1])/interval
+        velocity_list_x.append(displacement_x)
+        velocity_list_y.append(displacement_y)
+    for i in range(interval):
+        velocity_list_y.append(0)
+        velocity_list_x.append(0)
+    velocity_list_x = np.array(velocity_list_x)
+    velocity_list_y = np.array(velocity_list_y)
+
+    return velocity_list_x, velocity_list_y

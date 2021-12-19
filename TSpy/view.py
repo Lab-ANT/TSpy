@@ -5,7 +5,7 @@ Views defined in StateCorr.
 
 import numpy as np
 import matplotlib.pyplot as plt
-from TSpy.utils import z_normalize,calculate_density_matrix
+from TSpy.utils import z_normalize,calculate_density_matrix, calculate_velocity_list, find
 # import scipy
 # from stview.utils import calculate_scalar_velocity_list, find, normalize, standardize, find, calculate_density_matrix, calculate_velocity_list
 # import stview.colors as sc
@@ -25,6 +25,117 @@ def embedding_space(embeddings, label=None, alpha=0.8, s=0.1, color='blue', show
         plt.scatter(x,y,alpha=alpha,s=s)
     if show:
         plt.show()
+
+# arrow map.
+def arrow_map(feature_list, n=100, t=100):
+    feature_list = np.array(feature_list)
+    x = feature_list[:,0]
+    y = feature_list[:,1]
+    velocity_list_x, velocity_list_y = calculate_velocity_list(feature_list,interval=t)
+    h = w = n
+    h_start = np.min(y)
+    h_end = np.max(y)
+    h_step = (h_end-h_start)/h
+    w_start = np.min(x)
+    w_end = np.max(x)
+    w_step = (w_end-w_start)/w
+
+    row_partition = []
+    for i in range(h):
+        row_partition.append(find(y,h_start+i*h_step,h_start+(i+1)*h_step))
+
+    U = []
+    V = []
+    for col_idx in row_partition:
+        col = x[col_idx]
+        U_col = []
+        V_col = []
+        for i in range(w):
+            idx = find(col,w_start+i*w_step,w_start+(i+1)*w_step)
+            x_list = velocity_list_x[idx]
+            x_mean = np.mean(x_list)
+            y_list = velocity_list_y[idx]
+            y_mean = np.mean(y_list)
+            U_col.append(x_mean)
+            V_col.append(y_mean)
+        U.append(np.array(U_col))
+        V.append(np.array(V_col))
+    U = np.array(U)
+    V = np.array(V)
+    # U=U.T
+    # V=V.T
+    U[np.isnan(U)]=0
+    V[np.isnan(V)]=0
+    # U = normalize(U)
+    # V = normalize(V)
+
+    x_, y_ = np.meshgrid(np.linspace(-3, 3, n),
+                   np.linspace(-3, 3, n))
+    M = np.hypot(U, V)
+    fig1, ax1 = plt.subplots()
+    ax1.set_title('Arrows scale with plot width, not view')
+    Q = ax1.quiver(x_, y_, U, V, M, units='width')
+
+    plt.show()
+    # fig3, ax3 = plt.subplots()
+    # ax3.set_title("pivot='tip'; scales with x view")
+    # M = np.hypot(U, V)
+    # Q = ax3.quiver(x_, y_, U, V, M, units='x', pivot='tip', width=0.022,
+    #            scale=1 / 0.15)
+    # qk = ax3.quiverkey(Q, 0.9, 0.9, 1, r'$1 \frac{m}{s}$', labelpos='E',
+    #                coordinates='figure')
+    # ax3.scatter(x_, y_, color='0.5', s=1)
+
+def flow_map(feature_list, n=50, t=100):
+    feature_list = np.array(feature_list)
+    x = feature_list[:,0]
+    y = feature_list[:,1]
+    velocity_list_x, velocity_list_y = calculate_velocity_list(feature_list,interval=t)
+    h = w = n
+    h_start = np.min(y)
+    h_end = np.max(y)
+    h_step = (h_end-h_start)/h
+    w_start = np.min(x)
+    w_end = np.max(x)
+    w_step = (w_end-w_start)/w
+
+    row_partition = []
+    for i in range(h):
+        row_partition.append(find(y,h_start+i*h_step,h_start+(i+1)*h_step))
+    
+    row_partition = list(reversed(row_partition))
+
+    U = []
+    V = []
+    for col_idx in row_partition:
+        col = x[col_idx]
+        U_col = []
+        V_col = []
+        for i in range(w):
+            idx = find(col,w_start+i*w_step,w_start+(i+1)*w_step)
+            x_list = velocity_list_x[idx]
+            x_mean = np.mean(x_list)
+            y_list = velocity_list_y[idx]
+            y_mean = np.mean(y_list)
+            U_col.append(x_mean)
+            V_col.append(y_mean)
+            # print(U_col)
+        U.append(np.array(U_col))
+        V.append(np.array(V_col))
+    U = np.array(U)
+    V = np.array(V)
+    U[np.isnan(U)]=0
+    V[np.isnan(V)]=0
+    # U = normalize(U)
+    # V = normalize(V)
+
+    x_, y_ = np.meshgrid(np.linspace(-3, 3, n),
+                   np.linspace(-3, 3, n))
+
+    fig0, ax0 = plt.subplots()
+    strm = ax0.streamplot(x_, y_, U, V, color=U, linewidth=2, cmap=plt.cm.autumn)
+    fig0.colorbar(strm.lines)
+    plt.show()
 
 def density_map_3d(feature_list, n=100, show=False, figsize=(6,6), op=None, t = 1):
     density_matrix,x_s,x_e,y_s,y_e = calculate_density_matrix(feature_list,n)
