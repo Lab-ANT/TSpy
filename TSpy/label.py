@@ -32,6 +32,15 @@ def seg_to_label(label):
     result = np.concatenate(seg)
     return result
 
+def reorder_label(label):
+    # Start from 0.
+    label = np.array(label)
+    ordered_label_set = remove_duplication(compact(label))
+    idx_list = [np.argwhere(label==e) for e in ordered_label_set]
+    for i, idx in enumerate(idx_list):
+        label[idx] = i
+    return label
+
 def adjust_label(label):
     '''
     Adjust label order.

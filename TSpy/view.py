@@ -6,12 +6,10 @@ Views defined in StateCorr.
 import numpy as np
 import matplotlib.pyplot as plt
 from TSpy.utils import z_normalize,calculate_density_matrix, calculate_velocity_list, find
-# import scipy
-# from stview.utils import calculate_scalar_velocity_list, find, normalize, standardize, find, calculate_density_matrix, calculate_velocity_list
-# import stview.colors as sc
-# from sklearn.cluster import OPTICS
-# import matplotlib.gridspec as gridspec
-# import seaborn as sns
+
+def plot(series, label=None):
+    plt.style.use('bmh')
+    
 
 def embedding_space(embeddings, label=None, alpha=0.8, s=0.1, color='blue', show=False):
     embeddings = np.array(embeddings)
@@ -19,8 +17,10 @@ def embedding_space(embeddings, label=None, alpha=0.8, s=0.1, color='blue', show
     y = embeddings[:,1]
     plt.style.use('bmh')
     plt.figure(figsize=(4,4))
-    if label:
-        pass
+    if label is not None:
+        for l in set(label):
+            idx = np.argwhere(label==l)
+            plt.scatter(x[idx],y[idx],alpha=alpha,s=s)
     else:
         plt.scatter(x,y,alpha=alpha,s=s)
     if show:
