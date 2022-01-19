@@ -7,12 +7,18 @@ import numpy as np
 import matplotlib.pyplot as plt
 from TSpy.utils import z_normalize,calculate_density_matrix, calculate_velocity_list, find
 
-def plot_mulvariate_time_series(series, figsize=(18,2)):
+def plot_mulvariate_time_series(series, figsize=(18,2), separate=False):
     _, num_channel = series.shape
     plt.style.use('ggplot')
-    plt.figure(figsize=figsize)
-    for i in range(num_channel):
-        plt.plot(series[:,i])
+    if not separate:
+        plt.figure(figsize=figsize)
+        for i in range(num_channel):
+            plt.plot(series[:,i])
+    else:
+        _, ax = plt.subplots(nrows=num_channel, sharex=True, figsize=figsize)
+        for i, ax_ in enumerate(ax):
+            ax_.plot(series[:,i])
+    plt.tight_layout()
     plt.show()
     
 def plot(series, label=None):
