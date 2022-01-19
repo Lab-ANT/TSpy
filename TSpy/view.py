@@ -20,10 +20,18 @@ def plot_mulvariate_time_series(series, figsize=(18,2), separate=False):
             ax_.plot(series[:,i])
     plt.tight_layout()
     plt.show()
+
+def plot_mulvariate_time_series_with_label(series, figsize=(18,2), label=None):
+    _, num_channel = series.shape
+    plt.style.use('ggplot')
+    plt.figure(figsize=figsize)
+    for i in range(num_channel):
+        plt.plot(series[:,i])
     
-def plot(series, label=None):
-    plt.style.use('bmh')
-    
+    if label is not None:
+        plt.step(np.arange(len(label)), label)
+    plt.tight_layout()
+    plt.show()
 
 def embedding_space(embeddings, label=None, alpha=0.8, s=0.1, color='blue', show=False):
     embeddings = np.array(embeddings)
