@@ -7,7 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from TSpy.utils import z_normalize,calculate_density_matrix, calculate_velocity_list, find
 
-def plot_mulvariate_time_series(series, figsize=(18,2), separate=False):
+def plot_mulvariate_time_series(series, figsize=(18,2), separate=False, save_path=None, show=False):
     _, num_channel = series.shape
     plt.style.use('ggplot')
     if not separate:
@@ -19,7 +19,10 @@ def plot_mulvariate_time_series(series, figsize=(18,2), separate=False):
         for i, ax_ in enumerate(ax):
             ax_.plot(series[:,i])
     plt.tight_layout()
-    plt.show()
+    if save_path is not None:
+        plt.savefig(save_path)
+    if show:
+        plt.show()
 
 def plot_mulvariate_time_series_with_label(series, figsize=(18,2), label=None):
     _, num_channel = series.shape
