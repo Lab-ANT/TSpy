@@ -11,7 +11,7 @@ def macro_precision(prediction, groundtruth):
     if len(prediction) != len(groundtruth):
         print('prediction and groundtruth must be of the same length')
     else:
-        return metrics.precision_score(adjust_label(prediction),adjust_label(groundtruth),average='macro')
+        return metrics.precision_score(adjust_label(prediction),adjust_label(groundtruth),average='macro', zero_division=0)
 
 def macro_f1score(prediction, groundtruth):
     '''
@@ -22,7 +22,7 @@ def macro_f1score(prediction, groundtruth):
     if len(prediction) != len(groundtruth):
         print('prediction and groundtruth must be of the same length')
     else:
-        return metrics.f1_score(adjust_label(prediction),adjust_label(groundtruth),average='macro')
+        return metrics.f1_score(adjust_label(prediction),adjust_label(groundtruth),average='macro', zero_division=0)
 
 def ARI(prediction, groundtruth):
     return metrics.adjusted_rand_score(prediction, groundtruth)
