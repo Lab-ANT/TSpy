@@ -24,15 +24,21 @@ def plot_mulvariate_time_series(series, figsize=(18,2), separate=False, save_pat
     if show:
         plt.show()
 
-def plot_mulvariate_time_series_with_label(series, figsize=(18,2), label=None):
+def plot_mulvariate_time_series_and_label(series, groundtruth=None, label=None, figsize=(18,2)):
     _, num_channel = series.shape
     plt.style.use('ggplot')
-    plt.figure(figsize=figsize)
+    _, ax = plt.subplots(nrows=2, sharex=True, figsize=figsize)
+
     for i in range(num_channel):
-        plt.plot(series[:,i])
+        ax[0].plot(series[:,i])
     
+    if groundtruth is not None:
+        ax[1].step(np.arange(len(groundtruth)), groundtruth, label='groundtruth')
+
     if label is not None:
-        plt.step(np.arange(len(label)), label)
+        ax[1].step(np.arange(len(label)), label, label='prediction')
+
+    plt.legend()
     plt.tight_layout()
     plt.show()
 
