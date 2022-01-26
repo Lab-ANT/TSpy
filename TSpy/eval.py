@@ -46,7 +46,7 @@ def __adjusted_macro_score(groundtruth, prediction, score_type):
             if score > max_score:
                 max_score = score
                 used_j = j
-            print(i,j)
+                
         used_label_set.add(used_j)
         total += max_score
     return total/n
