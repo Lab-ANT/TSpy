@@ -110,8 +110,14 @@ def AMI(prediction, groundtruth):
 
 def evaluation(groundtruth, prediction):
     ari = ARI(groundtruth, prediction)
-    # ami = AMI(groundtruth, prediction)
+    ami = AMI(groundtruth, prediction)
     f1 = adjusted_macro_f1score(groundtruth, prediction)
     precision = adjusted_macro_precision(groundtruth, prediction)
     recall = adjusted_macro_recall(groundtruth, prediction)
-    return f1, precision, recall, ari, 0
+    return f1, precision, recall, ari, ami
+
+def adjusted_macro_F_measure(groundtruth, prediction):
+    f1 = adjusted_macro_f1score(groundtruth, prediction)
+    precision = adjusted_macro_precision(groundtruth, prediction)
+    recall = adjusted_macro_recall(groundtruth, prediction)
+    return f1, precision, recall
