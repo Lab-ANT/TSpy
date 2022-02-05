@@ -53,3 +53,32 @@ def adjust_label(label):
     for idx, elem in zip(idx_list,label_set):
         label[idx] = elem
     return label
+
+def bucket_vote(bucket):
+    '''
+    The bucket vote algorithm.
+    @return: element of the largest amount.
+    @Param bucket: the bucket of data, array like, one dim.
+    '''
+    vote_vector = np.zeros(len(set(bucket)), dtype=int)
+    
+    # create symbol table
+    symbol_table = {}
+    symbol_list = []
+    for i, s in enumerate(set(bucket)):
+        symbol_table[s] = i
+        symbol_list.append(s)
+
+    # do vote
+    for e in bucket:
+        vote_vector[symbol_table[e]] += 1
+
+    symbol_idx = np.argmax(vote_vector)
+    return symbol_list[symbol_idx]
+
+def smooth(X, bucket_size):
+    for i in range(0,len(X), bucket_size):
+        s = bucket_vote(X[i:i+bucket_size])
+        true_size = len(X[i:i+bucket_size])
+        X[i:i+bucket_size] = s*np.ones(true_size,dtype=int)
+    return X
