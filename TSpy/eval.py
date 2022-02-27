@@ -122,49 +122,34 @@ def evaluate_cut_point(groundtruth, prediction, d):
     print(list_true_pos_cut, list_pred_pos_cut)
     tp = 0
     fn = 0
-    total = len(list_pred_pos_cut)
     for pos_true in list_true_pos_cut:
         flag = False
+        list_elem_to_be_removed = []
         for pos_pred in list_pred_pos_cut:
             if pos_pred >= pos_true-d and pos_pred <= pos_true+d-1:
-                tp += 1
-                list_pred_pos_cut.remove(pos_pred)
+                print('current elem %d, internal[%d,%d],pop%d'%(pos_pred, pos_true-d, pos_true+d-1, pos_pred))
+                # list_pred_pos_cut.remove(pos_pred)
+                list_elem_to_be_removed.append(pos_pred)
                 flag = True
         if not flag:
             fn += 1
+        else:
+            tp += 1
+        # remove
+        for e in list_elem_to_be_removed:
+            list_pred_pos_cut.remove(e)
+        print(list_pred_pos_cut)
+
     fp = len(list_pred_pos_cut)
     precision = tp/(tp+fp)
     recall = tp/(tp+fn)
     fscore = 2*precision*recall/(precision+recall)
-    print(tp, fn, fp, total)
+    print(tp, fn, fp)
     return fscore, precision, recall
 
-def evaluate_cut_point_v2(groundtruth, prediction, d):
-    list_true_pos_cut = find_cut_points_from_label(groundtruth)
-    list_pred_pos_cut = find_cut_points_from_label(prediction)
-    print(list_true_pos_cut, list_pred_pos_cut)
-    tp = 0
-    fn = 0
-    total = len(list_pred_pos_cut)
-    for pos_true in list_true_pos_cut:
-        flag = False
-        for pos_pred in list_pred_pos_cut:
-            if pos_pred >= pos_true-d and pos_pred <= pos_true+d-1:
-                tp += 1
-                list_pred_pos_cut.remove(pos_pred)
-                flag = True
-        if not flag:
-            fn += 1
-    fp = len(list_pred_pos_cut)
-    precision = tp/(tp+fp)
-    recall = tp/(tp+fn)
-    fscore = 2*precision*recall/(precision+recall)
-    print(tp, fn, fp, total)
-    return fscore, precision, recall
-
-groundtruth = [0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,1,1,1,1,1]
-prediction =  [1,1,1,1,0,0,0,0,0,1,1,1,1,1,2,2,2,2,2,2]
-print(evaluate_cut_point(groundtruth, prediction, 2))
+# groundtruth = [0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,1,1,1,2,2,5,5,5,5,5]
+# prediction =  [1,1,1,1,0,1,0,0,0,1,1,1,1,1,2,2,2,2,2,2,5,5,5,3,3]
+# print(evaluate_cut_point(groundtruth, prediction, 2))
 
 def ARI(prediction, groundtruth):
     return metrics.adjusted_rand_score(groundtruth, prediction)
