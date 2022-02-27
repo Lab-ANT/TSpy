@@ -119,7 +119,7 @@ def find_cut_points_from_label(label):
 def evaluate_cut_point(groundtruth, prediction, d):
     list_true_pos_cut = find_cut_points_from_label(groundtruth)
     list_pred_pos_cut = find_cut_points_from_label(prediction)
-    print(list_true_pos_cut, list_pred_pos_cut)
+    # print(list_true_pos_cut, list_pred_pos_cut)
     tp = 0
     fn = 0
     for pos_true in list_true_pos_cut:
@@ -127,7 +127,7 @@ def evaluate_cut_point(groundtruth, prediction, d):
         list_elem_to_be_removed = []
         for pos_pred in list_pred_pos_cut:
             if pos_pred >= pos_true-d and pos_pred <= pos_true+d-1:
-                print('current elem %d, internal[%d,%d],pop%d'%(pos_pred, pos_true-d, pos_true+d-1, pos_pred))
+                # print('current elem %d, internal[%d,%d],pop%d'%(pos_pred, pos_true-d, pos_true+d-1, pos_pred))
                 # list_pred_pos_cut.remove(pos_pred)
                 list_elem_to_be_removed.append(pos_pred)
                 flag = True
@@ -138,13 +138,24 @@ def evaluate_cut_point(groundtruth, prediction, d):
         # remove
         for e in list_elem_to_be_removed:
             list_pred_pos_cut.remove(e)
-        print(list_pred_pos_cut)
+        # print(list_pred_pos_cut)
 
     fp = len(list_pred_pos_cut)
-    precision = tp/(tp+fp)
-    recall = tp/(tp+fn)
-    fscore = 2*precision*recall/(precision+recall)
-    print(tp, fn, fp)
+    
+    if tp+fp==0:
+        precision = 0
+    else:
+        precision = tp/(tp+fp)
+    
+    if tp+fn==0:
+        recall = 0
+    else:
+        recall = tp/(tp+fn)
+    
+    if precision+recall==0:
+        fscore = 0
+    else:
+        fscore = 2*precision*recall/(precision+recall)
     return fscore, precision, recall
 
 # groundtruth = [0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,1,1,1,2,2,5,5,5,5,5]
