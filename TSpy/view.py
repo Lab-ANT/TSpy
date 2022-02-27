@@ -7,6 +7,26 @@ import numpy as np
 import matplotlib.pyplot as plt
 from TSpy.utils import z_normalize,calculate_density_matrix, calculate_velocity_list, find
 
+def plot_mulvariate_time_series_and_label_v2(series, groundtruth=None, label=None, figsize=(18,2)):
+    _, num_channel = series.shape
+    plt.style.use('ggplot')
+    _, ax = plt.subplots(nrows=3, sharex=True, figsize=figsize)
+
+    for i in range(num_channel):
+        ax[0].plot(series[:,i])
+    
+    if groundtruth is not None:
+        ax[1].imshow(label.reshape(1, -1), aspect='auto',
+          interpolation='nearest')
+
+    if label is not None:
+        ax[2].imshow(label.reshape(1, -1), aspect='auto',
+          interpolation='nearest')
+
+    plt.legend()
+    plt.tight_layout()
+    plt.show()
+
 def plot_mulvariate_time_series(series, figsize=(18,2), separate=False, save_path=None, show=False):
     _, num_channel = series.shape
     plt.style.use('ggplot')
