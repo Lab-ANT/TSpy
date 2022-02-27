@@ -17,6 +17,21 @@ def batch_z_normalize(data_tensor):
         result[i] = w
     return result
 
+def normalize(data, mode='channel'):
+    if mode == 'channel':
+        _, num_channel = data.shape
+        for i in range(num_channel):
+            mean = np.mean(data[:,i])
+            var = np.var(data[:,i])
+            
+    mean = np.mean(data)
+    var = np.var(data)
+    i = 0
+    for channel in data[0]:
+        data[0][i] = (channel - mean)/math.sqrt(var)
+        i += 1
+    return data
+
 def all_normalize(data_tensor):
     mean = np.mean(data_tensor)
     var = np.var(data_tensor)
