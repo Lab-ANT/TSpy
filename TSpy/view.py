@@ -18,12 +18,10 @@ def plot_mulvariate_time_series_and_label_v2(series, groundtruth=None, label=Non
     if groundtruth is not None:
         ax[1].imshow(groundtruth.reshape(1, -1), aspect='auto', cmap='tab10',
           interpolation='nearest')
-        # ax[2].step(np.arange(len(groundtruth)), groundtruth, label='groundtruth')
 
     if label is not None:
         ax[2].imshow(label.reshape(1, -1), aspect='auto', cmap='tab10',
           interpolation='nearest')
-        # ax[4].step(np.arange(len(label)), label, label='prediction')
 
     plt.legend()
     plt.tight_layout()
