@@ -17,20 +17,18 @@ def batch_z_normalize(data_tensor):
         result[i] = w
     return result
 
-def normalize(data, mode='channel'):
+def normalize(X, mode='channel'):
     if mode == 'channel':
-        _, num_channel = data.shape
-        for i in range(num_channel):
-            mean = np.mean(data[:,i])
-            var = np.var(data[:,i])
-            
-    mean = np.mean(data)
-    var = np.var(data)
-    i = 0
-    for channel in data[0]:
-        data[0][i] = (channel - mean)/math.sqrt(var)
-        i += 1
-    return data
+        for i in range(X.shape[1]):
+            max = np.max(X[:,i])
+            min = np.min(X[:,i])
+            X[:,i] = (X[:,i]-min)/(max-min)
+    elif mode == 'all':
+        max = np.max(X)
+        min = np.min(X)
+        X = (X-min)/(max-min)
+        
+    return X
 
 def all_normalize(data_tensor):
     mean = np.mean(data_tensor)
