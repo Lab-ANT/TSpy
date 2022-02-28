@@ -3,8 +3,8 @@ from TSpy.label import seg_to_label
 import scipy.io
 import numpy as np
 
-def load_USC_HAD(subject, target, data_path):
-    prefix = os.path.join(data_path,'USC-HAD/Subject'+str(subject)+'/')
+def load_USC_HAD(subject, target, dataset_path):
+    prefix = os.path.join(dataset_path,'USC-HAD/Subject'+str(subject)+'/')
     fname_prefix = 'a'
     fname_postfix = 't'+str(target)+'.mat'
     data_list = []
