@@ -165,7 +165,7 @@ def evaluate_cut_point(groundtruth, prediction, d):
 def ARI(prediction, groundtruth):
     return metrics.adjusted_rand_score(groundtruth, prediction)
 
-def AMI(prediction, groundtruth):
+def ANMI(prediction, groundtruth):
     return metrics.adjusted_mutual_info_score(groundtruth, prediction)
 
 def NMI(groundtruth, prediction):
@@ -173,13 +173,13 @@ def NMI(groundtruth, prediction):
 
 def evaluate_clustering(groundtruth, prediction):
     ari = ARI(groundtruth, prediction)
-    ami = AMI(groundtruth, prediction)
+    ami = ANMI(groundtruth, prediction)
     nmi = NMI(groundtruth, prediction)
     return ari, ami, nmi
 
 def evaluation(groundtruth, prediction):
     ari = ARI(groundtruth, prediction)
-    ami = AMI(groundtruth, prediction)
+    ami = ANMI(groundtruth, prediction)
     f1 = adjusted_macro_f1score(groundtruth, prediction)
     precision = adjusted_macro_precision(groundtruth, prediction)
     recall = adjusted_macro_recall(groundtruth, prediction)
