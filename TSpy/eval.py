@@ -168,6 +168,15 @@ def ARI(prediction, groundtruth):
 def AMI(prediction, groundtruth):
     return metrics.adjusted_mutual_info_score(groundtruth, prediction)
 
+def NMI(groundtruth, prediction):
+    return metrics.normalized_mutual_info_score(groundtruth, prediction)
+
+def evaluate_clustering(groundtruth, prediction):
+    ari = ARI(groundtruth, prediction)
+    ami = AMI(groundtruth, prediction)
+    nmi = NMI(groundtruth, prediction)
+    return ari, ami, nmi
+
 def evaluation(groundtruth, prediction):
     ari = ARI(groundtruth, prediction)
     ami = AMI(groundtruth, prediction)
