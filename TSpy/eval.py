@@ -173,9 +173,9 @@ def NMI(groundtruth, prediction):
 
 def evaluate_clustering(groundtruth, prediction):
     ari = ARI(groundtruth, prediction)
-    ami = ANMI(groundtruth, prediction)
+    anmi = ANMI(groundtruth, prediction)
     nmi = NMI(groundtruth, prediction)
-    return ari, ami, nmi
+    return ari, anmi, nmi
 
 def evaluation(groundtruth, prediction):
     ari = ARI(groundtruth, prediction)
