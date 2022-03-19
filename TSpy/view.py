@@ -3,9 +3,11 @@ Created by Chengyu on 2021/12/12.
 Views defined in StateCorr.
 '''
 
+from re import I
 import numpy as np
 import matplotlib.pyplot as plt
 from TSpy.utils import z_normalize,calculate_density_matrix, calculate_velocity_list, find
+from TSpy.color import *
 
 def plot_mulvariate_time_series_and_label_v2(series, groundtruth=None, label=None, figsize=(18,2)):
     _, num_channel = series.shape
@@ -63,15 +65,21 @@ def plot_mulvariate_time_series_and_label(series, groundtruth=None, label=None, 
     plt.show()
 
 def embedding_space(embeddings, label=None, alpha=0.8, s=0.1, color='blue', show=False):
+    color_list = ['b', 'r', 'g', 'purple', 'y', 'gray']
     embeddings = np.array(embeddings)
     x = embeddings[:,0]
     y = embeddings[:,1]
-    plt.style.use('bmh')
+    plt.style.use('ggplot')
+    # plt.style.use('classic')
     plt.figure(figsize=(4,4))
+    plt.grid()
+    i = 0
     if label is not None:
         for l in set(label):
             idx = np.argwhere(label==l)
+            # plt.scatter(x[idx],y[idx],alpha=alpha,s=s, color=color_list[i], linewidths=1)
             plt.scatter(x[idx],y[idx],alpha=alpha,s=s)
+            i+=1
     else:
         plt.scatter(x,y,alpha=alpha,s=s)
     if show:
