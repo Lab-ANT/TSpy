@@ -69,16 +69,16 @@ def embedding_space(embeddings, label=None, alpha=0.8, s=0.1, color='blue', show
     embeddings = np.array(embeddings)
     x = embeddings[:,0]
     y = embeddings[:,1]
-    plt.style.use('ggplot')
-    # plt.style.use('classic')
+    # plt.style.use('ggplot')
+    plt.style.use('classic')
     plt.figure(figsize=(4,4))
     plt.grid()
     i = 0
     if label is not None:
         for l in set(label):
             idx = np.argwhere(label==l)
-            # plt.scatter(x[idx],y[idx],alpha=alpha,s=s, color=color_list[i], linewidths=1)
-            plt.scatter(x[idx],y[idx],alpha=alpha,s=s)
+            plt.scatter(x[idx],y[idx],alpha=alpha,s=s, color=color_list[i], linewidths=1)
+            # plt.scatter(x[idx],y[idx],alpha=alpha,s=s)
             i+=1
     else:
         plt.scatter(x,y,alpha=alpha,s=s)
