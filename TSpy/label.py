@@ -82,3 +82,9 @@ def smooth(X, bucket_size):
         true_size = len(X[i:i+bucket_size])
         X[i:i+bucket_size] = s*np.ones(true_size,dtype=int)
     return X
+
+def dilate_label(label, f, max_len):
+    slice_list = []
+    for e in label:
+        slice_list.append(e*np.ones(f, dtype=int))
+    return np.concatenate(slice_list)[:max_len]
