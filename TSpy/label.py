@@ -88,3 +88,12 @@ def dilate_label(label, f, max_len):
     for e in label:
         slice_list.append(e*np.ones(f, dtype=int))
     return np.concatenate(slice_list)[:max_len]
+
+def str_list_to_label(label):
+    label_set = remove_duplication(label)
+    label = np.array(label)
+    new_label = np.array(np.ones(len(label)))
+    for i, l in enumerate(label_set):
+        idx = np.argwhere(label==l)
+        new_label[idx] = i
+    return new_label.astype(int)
