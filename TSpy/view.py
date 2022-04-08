@@ -84,7 +84,7 @@ def embedding_space(embeddings, label=None, alpha=0.8, s=0.1, color='blue', show
     else:
         plt.scatter(x,y,alpha=alpha,s=s)
     if show:
-        plt.tight_layout()
+        # plt.tight_layout()
         plt.show()
 
 # arrow map.
