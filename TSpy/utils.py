@@ -17,7 +17,7 @@ def batch_z_normalize(data_tensor):
         result[i] = w
     return result
 
-def normalize(X, mode='channel'):
+def normalize(X, mode='all'):
     if mode == 'channel':
         for i in range(X.shape[1]):
             max = np.max(X[:,i])
