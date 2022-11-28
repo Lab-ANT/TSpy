@@ -15,6 +15,13 @@ def load_UEA(dataset, path):
         f.close()
     return train_data, train_labels, test_data, test_labels, label_map
 
+def load_general_seg_dagaset(path):
+    data = np.load(path)
+    mts = data[:,:-1]
+    label = data[:,-1]
+    print(mts.shape, label.shape)
+    return mts, label
+
 def load_USC_HAD(subject, target, dataset_path):
     prefix = os.path.join(dataset_path,'USC-HAD/Subject'+str(subject)+'/')
     fname_prefix = 'a'
