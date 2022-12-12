@@ -19,7 +19,7 @@ def load_general_seg_dagaset(path):
     data = np.load(path)
     mts = data[:,:-1]
     label = data[:,-1]
-    print(mts.shape, label.shape)
+    # print(mts.shape, label.shape)
     return mts, label
 
 def load_USC_HAD(subject, target, dataset_path):
