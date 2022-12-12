@@ -3,6 +3,73 @@ from TSpy.label import seg_to_label
 import scipy.io
 import numpy as np
 import json
+import pandas as pd
+
+def load_UCR(dataset, path):
+    train_file = os.path.join(path+'/UCRArchive_2018', dataset, dataset + "_TRAIN.tsv")
+    test_file = os.path.join(path+'/UCRArchive_2018', dataset, dataset + "_TEST.tsv")
+    train_df = pd.read_csv(train_file, sep='\t', header=None)
+    test_df = pd.read_csv(test_file, sep='\t', header=None)
+    train_array = np.array(train_df)
+    test_array = np.array(test_df)
+
+    # Move the labels to {0, ..., L-1}
+    labels = np.unique(train_array[:, 0])
+    transform = {}
+    for i, l in enumerate(labels):
+        transform[l] = i
+
+    train = train_array[:, 1:].astype(np.float64)
+    train_labels = np.vectorize(transform.get)(train_array[:, 0])
+    test = test_array[:, 1:].astype(np.float64)
+    test_labels = np.vectorize(transform.get)(test_array[:, 0])
+
+    # Normalization for non-normalized datasets
+    # To keep the amplitude information, we do not normalize values over
+    # individual time series, but on the whole dataset
+    if dataset not in [
+        'AllGestureWiimoteX',
+        'AllGestureWiimoteY',
+        'AllGestureWiimoteZ',
+        'BME',
+        'Chinatown',
+        'Crop',
+        'EOGHorizontalSignal',
+        'EOGVerticalSignal',
+        'Fungi',
+        'GestureMidAirD1',
+        'GestureMidAirD2',
+        'GestureMidAirD3',
+        'GesturePebbleZ1',
+        'GesturePebbleZ2',
+        'GunPointAgeSpan',
+        'GunPointMaleVersusFemale',
+        'GunPointOldVersusYoung',
+        'HouseTwenty',
+        'InsectEPGRegularTrain',
+        'InsectEPGSmallTrain',
+        'MelbournePedestrian',
+        'PickupGestureWiimoteZ',
+        'PigAirwayPressure',
+        'PigArtPressure',
+        'PigCVP',
+        'PLAID',
+        'PowerCons',
+        'Rock',
+        'SemgHandGenderCh2',
+        'SemgHandMovementCh2',
+        'SemgHandSubjectCh2',
+        'ShakeGestureWiimoteZ',
+        'SmoothSubspace',
+        'UMD'
+    ]:
+        return train[..., np.newaxis], train_labels, test[..., np.newaxis], test_labels
+    
+    mean = np.nanmean(train)
+    std = np.nanstd(train)
+    train = (train - mean) / std
+    test = (test - mean) / std
+    return train[..., np.newaxis], train_labels, test[..., np.newaxis], test_labels
 
 def load_UEA(dataset, path):
     path = os.path.join(path, dataset+'/'+dataset)
