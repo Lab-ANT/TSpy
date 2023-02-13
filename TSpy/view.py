@@ -67,41 +67,6 @@ def plot_mts(X, groundtruth=None, prediction=None, figsize=(18,2), show=False):
     if show:
         plt.show()
 
-def plot_mulvariate_time_series_and_label_v2(series, groundtruth=None, label=None, figsize=(18,2)):
-    if len(series.shape) == 1:
-        plt.style.use('ggplot')
-        _, ax = plt.subplots(nrows=3, sharex=True, figsize=figsize)
-
-        for i in range(num_channel):
-            ax[0].plot(series)
-        
-        if groundtruth is not None:
-            ax[1].imshow(groundtruth.reshape(1, -1), aspect='auto', cmap='tab10',
-            interpolation='nearest')
-
-        if label is not None:
-            ax[2].imshow(label.reshape(1, -1), aspect='auto', cmap='tab10',
-            interpolation='nearest')
-    else:
-        _, num_channel = series.shape
-        plt.style.use('ggplot')
-        _, ax = plt.subplots(nrows=3, sharex=True, figsize=figsize)
-
-        for i in range(num_channel):
-            ax[0].plot(series[:,i])
-        
-        if groundtruth is not None:
-            ax[1].imshow(groundtruth.reshape(1, -1), aspect='auto', cmap='tab10',
-            interpolation='nearest')
-
-        if label is not None:
-            ax[2].imshow(label.reshape(1, -1), aspect='auto', cmap='tab10',
-            interpolation='nearest')
-
-    # plt.legend()
-    plt.tight_layout()
-    plt.show()
-
 def plot_mulvariate_time_series(series, figsize=(18,2), separate=False, save_path=None, show=False):
     _, num_channel = series.shape
     plt.style.use('ggplot')
