@@ -9,6 +9,64 @@ import matplotlib.pyplot as plt
 from TSpy.utils import z_normalize,calculate_density_matrix, calculate_velocity_list, find
 from TSpy.color import *
 
+def plot_mts(X, groundtruth=None, prediction=None, figsize=(18,2), show=False):
+    '''
+    X: Time series, whose shape is (T, C) or (T, 1), (T, ) for uts, where T is length, C
+        is the number of channels.
+    groundtruth: can be of shape (T,) or (T, 1).
+    prediction: can be of shape (T,) or (T, 1).
+    '''
+
+    if groundtruth is None and prediction is None:
+        plt.plot(X)
+
+    elif groundtruth is not None and prediction is not None:
+        plt.figure(figsize=(16,4))
+        # plt.style.use('classic')
+
+        grid = plt.GridSpec(5,1)
+        ax1 = plt.subplot(grid[0:3])
+        plt.title('Time Series')
+        plt.yticks([])
+        plt.plot(X)
+
+        # plt.style.use('classic')
+        plt.subplot(grid[3], sharex=ax1)
+        plt.title('State Sequence (Groundtruth)')
+        plt.yticks([])
+        plt.imshow(groundtruth.reshape(1, -1), aspect='auto', cmap='tab20c',
+          interpolation='nearest')
+
+        # plt.style.use('classic')
+        plt.subplot(grid[4], sharex=ax1)
+        plt.title('State Sequence (Prediction)')
+        plt.yticks([])
+        plt.imshow(prediction.reshape(1, -1), aspect='auto', cmap='tab20c',
+          interpolation='nearest')
+
+    else:
+        if groundtruth is not None:
+            plt.figure(figsize=(16,4))
+            # plt.style.use('classic')
+
+            grid = plt.GridSpec(4,1)
+            ax1 = plt.subplot(grid[0:3])
+            plt.title('Time Series')
+            plt.yticks([])
+            plt.plot(X)
+
+            # plt.style.use('classic')
+            plt.subplot(grid[3], sharex=ax1)
+            plt.title('State Sequence')
+            plt.yticks([])
+            plt.imshow(groundtruth.reshape(1, -1), aspect='auto', cmap='tab20c',
+            interpolation='nearest')
+
+    # plt.legend()
+    plt.tight_layout()
+    if show:
+        plt.show()
+
 def plot_mulvariate_time_series_and_label_v2(series, groundtruth=None, label=None, figsize=(18,2)):
     if len(series.shape) == 1:
         plt.style.use('ggplot')
