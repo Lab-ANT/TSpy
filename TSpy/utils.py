@@ -3,6 +3,13 @@
 
 import numpy as np
 import math
+import pandas as pd
+
+def remove_constant_col(df):    
+    data = df.to_numpy()
+    sum = np.sum(data, axis=0)
+    data = np.squeeze(data[:, np.argwhere(sum!=0)], 2)
+    return pd.DataFrame(data)
 
 def len_of_file(path):
     return len(open(path,'rU').readlines())

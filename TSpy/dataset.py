@@ -1,9 +1,27 @@
 import os
 from TSpy.label import seg_to_label
+from TSpy.utils import remove_constant_col
 import scipy.io
 import numpy as np
 import json
 import pandas as pd
+
+def load_SMD(data_path, use_data, remove_const=True):
+    train_path = os.path.join(data_path, 'train')
+    test_path = os.path.join(data_path, 'test')
+    label_path = os.path.join(data_path, 'test_label')
+    df_train = pd.read_csv(os.path.join(train_path, use_data+'.txt'), header=None)
+    df_test = pd.read_csv(os.path.join(test_path, use_data+'.txt'), header=None)
+    if remove_const:
+        df = remove_constant_col(pd.concat([df_train, df_test]))
+    label = pd.read_csv(os.path.join(label_path, use_data+'.txt'), header=None)
+    data = df.to_numpy()
+    train_data = df_train.to_numpy()
+    test_data = df_test.to_numpy()
+    train_label = np.zeros(train_data.shape[0])
+    test_label = label.to_numpy().flatten()
+    label = np.concatenate([train_label, test_label])
+    return data, label, train_data, test_data, train_label, test_label
 
 def load_UCR(dataset, path):
     train_file = os.path.join(path+'/UCRArchive_2018', dataset, dataset + "_TRAIN.tsv")
