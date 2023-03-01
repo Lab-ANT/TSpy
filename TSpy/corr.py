@@ -7,6 +7,56 @@ import numpy as np
 import scipy.cluster.hierarchy as sch
 import pandas as pd
 
+def partial_state_correlation(X,Y):
+    length = len(X)
+    set_X = list(set(X))
+    set_Y = list(set(Y))
+    matrix = np.zeros((len(set_X),len(set_Y)))
+    for s_x in set_X:
+        for s_y in set_Y:
+            X_ = -np.ones(length, dtype=int)
+            X_[np.argwhere(X==s_x)] = 1
+            X_[np.argwhere(X!=s_x)] = 0
+            Y_ = -np.ones(length, dtype=int)
+            Y_[np.argwhere(Y==s_y)] = 1
+            Y_[np.argwhere(Y!=s_y)] = 0
+            # print(X_, np.argwhere(X==s_x))
+            # print(X_, Y_)
+            # NMI_score = metrics.normalized_mutual_info_score(X_, Y_)
+            NMI_score = metrics.accuracy_score(X_,Y_)
+            matrix[s_x, s_y] = NMI_score
+    return matrix
+
+# data1 = np.array([0,0,0,0,1,1,2,2,3,3,3,3])
+# data2 = np.array([0,0,1,1,1,1,2,2,2,2,2,2])
+
+def match_label(X, Y):
+    matrix = partial_state_correlation(X, Y)
+    # print(matrix)
+    set_X = list(set(X))
+    set_Y = list(set(Y))
+    row_len = len(set_Y)
+    adjust_list = []
+    while len(set_X) != 0 and len(set_Y) != 0:
+        pos = np.argmax(matrix)
+        i = int(pos/row_len)
+        j = int(pos%row_len)
+        # print(pos, i,'->',j)
+        # print(matrix.shape)
+        matrix[i,:] = 0
+        matrix[:,j] = 0
+        set_X.remove(i)
+        set_Y.remove(j)
+        adjust_list.append((i,j))
+    set_Y = list(set(Y))
+    for pair in adjust_list:
+        symbol = pair[1]
+        Y[np.argwhere(Y==pair[1])] = pair[0]+5
+    # print(Y)
+    return Y
+
+# match_label(data1, data2)
+
 def lagged_NMI(seq1, seq2, ratio):
     atom_step = 0.01
     length = len(seq1)
