@@ -52,10 +52,7 @@ def match_label(X, Y):
     for pair in adjust_list:
         symbol = pair[1]
         Y[np.argwhere(Y==pair[1])] = pair[0]+5
-    # print(Y)
     return Y
-
-# match_label(data1, data2)
 
 def lagged_NMI(seq1, seq2, ratio):
     atom_step = 0.01
