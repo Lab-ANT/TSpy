@@ -74,13 +74,15 @@ def lagged_NMI(seq1, seq2, ratio, atom_step=0.01):
     k = int(ratio/atom_step)
     max_score = -1
     lag = 0
-    for i in range(-k, k):
-        lag_len = int(k*atom_step*length)
-        if lag_len>=0:
-            seq1 = np.concatenate([np.zeros(lag_len).flatten(), seq1[lag_len:].flatten()])
+    for i in range(-k, k+1):
+        lag_len = int(i*atom_step*length)
+        if lag_len>0:
+            seq = np.concatenate([np.zeros(lag_len).flatten(), seq1[lag_len:].flatten()])
+        elif lag_len<0:
+            seq = np.concatenate([seq1[:lag_len].flatten(), np.zeros(-lag_len).flatten()])
         else:
-            seq1 = np.concatenate([seq1[:-lag_len].flatten(), np.zeros(-lag_len).flatten()])
-        NMI_score = metrics.normalized_mutual_info_score(seq1,seq2)
+            pass
+        NMI_score = metrics.normalized_mutual_info_score(seq,seq2)
         if NMI_score >= max_score:
             max_score = NMI_score
             lag = lag_len
