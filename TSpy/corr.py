@@ -27,9 +27,6 @@ def partial_state_correlation(X,Y):
             matrix[s_x, s_y] = NMI_score
     return matrix
 
-# data1 = np.array([0,0,0,0,1,1,2,2,3,3,3,3])
-# data2 = np.array([0,0,1,1,1,1,2,2,2,2,2,2])
-
 def match_label(X, Y):
     matrix = partial_state_correlation(X, Y)
     # print(matrix)
@@ -53,40 +50,6 @@ def match_label(X, Y):
         symbol = pair[1]
         Y[np.argwhere(Y==pair[1])] = pair[0]+5
     return Y
-
-# def lagged_NMI(seq1, seq2, ratio):
-#     atom_step = 0.01
-#     length = len(seq1)
-#     k = int(ratio/atom_step)
-#     max_score = -1
-#     lag = 0
-#     for i in range(k):
-#         lag_len = int(k*atom_step*length)
-#         seq1 = np.concatenate([np.zeros(lag_len).flatten(), seq1[lag_len:].flatten()])
-#         NMI_score = metrics.normalized_mutual_info_score(seq1,seq2)
-#         if NMI_score >= max_score:
-#             max_score = NMI_score
-#             lag = lag_len
-#     return max_score, lag
-
-# def lagged_NMI(seq1, seq2, ratio, atom_step=0.05):
-#     length = len(seq1)
-#     k = int(ratio/atom_step)
-#     max_score = -1
-#     lag = 0
-#     for i in range(-k, k+1):
-#         lag_len = int(i*atom_step*length)
-#         if lag_len>0:
-#             seq = np.concatenate([np.zeros(lag_len).flatten(), seq1[lag_len:].flatten()])
-#         elif lag_len<0:
-#             seq = np.concatenate([seq1[:lag_len].flatten(), np.zeros(-lag_len).flatten()])
-#         else:
-#             pass
-#         NMI_score = metrics.normalized_mutual_info_score(seq,seq2)
-#         if NMI_score >= max_score:
-#             max_score = NMI_score
-#             lag = lag_len
-#     return max_score, lag
 
 def lagged_NMI(seq1, seq2, ratio, atom_step=0.001):
     length = len(seq1)
