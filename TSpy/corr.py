@@ -92,18 +92,21 @@ def find_best_match(X, Y, score_matrix):
         new_Y[adjust_idx] = i
     return X, new_Y
 
-def lagged_partial_state_corr(X, Y, atom_step, max_ratio):
-    listX = decompose_state_seq(X)
-    listY = decompose_state_seq(Y)
-    score_matrix = np.zeros((len(listX),len(listY)))
-    for i in range(len(listX)):
-        for j in range(len(listY)):
-            sssX = listX[i]
-            sssY = listY[j]
-            add_lag(sssX, sssY, )
-            Jscore = score(sssX, sssY)
-            score_matrix[i,j] = Jscore
-    return score_matrix
+# def lagged_partial_state_corr(X, Y, atom_step, max_ratio):
+#     length = len(X)
+#     k = int(max_ratio/atom_step)
+
+#     listX = decompose_state_seq(X)
+#     listY = decompose_state_seq(Y)
+#     score_matrix = np.zeros((len(listX),len(listY)))
+#     for i in range(len(listX)):
+#         for j in range(len(listY)):
+#             sssX = listX[i]
+#             sssY = listY[j]
+#             add_lag(sssX, sssY, )
+#             Jscore = score(sssX, sssY)
+#             score_matrix[i,j] = Jscore
+#     return score_matrix
 
 def lagged_NMI(seq1, seq2, ratio, atom_step=0.001):
     length = len(seq1)
