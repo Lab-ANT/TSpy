@@ -51,6 +51,7 @@ def partial_state_corr(X,Y):
             sssY = listY[j]
             Jscore = score(sssX, sssY)
             score_matrix[i,j] = Jscore
+    # print(score_matrix)
     return score_matrix
 
 def find_unique_best_match(X, Y, score_matrix):
