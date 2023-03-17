@@ -31,15 +31,18 @@ def decompose_state_seq(X):
     return np.array(single_state_seq_list)
 
 def score(X,Y):
-    length = len(X)
-    p_x = np.count_nonzero(X)/length
-    p_xy = np.sum((X+Y)==2)/length
-    new = Y[np.argwhere(X==1)]
-    p_y_given_x = np.count_nonzero(new)/len(new)
-    # scores = p_xy*np.log(p_y_given_x/p_x)
-    scores = p_xy*p_y_given_x/p_x
-    # print(p_x, p_xy, p_y_given_x, scores)
-    return scores
+    # length = len(X)
+    # p_x = np.count_nonzero(X)/length
+    # p_xy = np.sum((X+Y)==2)/length
+    # new = Y[np.argwhere(X==1)]
+    # p_y_given_x = np.count_nonzero(new)/len(new)
+    # # scores = p_xy*np.log(p_y_given_x/p_x)
+    # scores = p_xy*p_y_given_x/p_x
+    # # print(p_x, p_xy, p_y_given_x, scores)
+    # return scores
+    len_x_or_y = np.count_nonzero(X)
+    len_x_and_y = np.sum((X+Y)==2)  
+    return len_x_and_y/len_x_or_y
 
 def partial_state_corr(X,Y):
     listX = decompose_state_seq(X)
