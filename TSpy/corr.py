@@ -40,7 +40,7 @@ def score(X,Y):
     # scores = p_xy*p_y_given_x/p_x
     # # print(p_x, p_xy, p_y_given_x, scores)
     # return scores
-    len_x_or_y = np.count_nonzero(X)
+    len_x_or_y = np.count_nonzero(X+Y)
     len_x_and_y = np.sum((X+Y)==2)  
     return len_x_and_y/len_x_or_y
 
