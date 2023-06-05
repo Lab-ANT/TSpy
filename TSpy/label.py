@@ -27,7 +27,7 @@ def seg_to_label(label):
     pre = 0
     seg = []
     for l in label:
-        seg.append(np.ones(l-pre,dtype=np.int)*label[l])
+        seg.append(np.ones(l-pre,dtype=int)*label[l])
         pre = l
     result = np.concatenate(seg)
     return result
